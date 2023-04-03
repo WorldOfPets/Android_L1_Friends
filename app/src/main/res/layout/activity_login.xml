@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:text="@string/login"/>
         <com.github.rahatarmanahmed.cpv.CircularProgressView
+            android:id="@+id/cpv_loader"
             android:layout_width="@dimen/loaded_size"
             android:layout_height="@dimen/loaded_size"
             android:layout_marginTop="16dp"
