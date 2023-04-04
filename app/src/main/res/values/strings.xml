@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">friends</string>
+    <string name="app_name">Friends</string>
     <string name="hello_user">Welcom to friend app!</string>
     <string name="login">Log in</string>
     <string name="hint_search">Search...</string>
