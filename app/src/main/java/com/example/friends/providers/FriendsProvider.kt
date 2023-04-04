@@ -1,25 +1,44 @@
 package com.example.friends.providers
 
+import android.os.Handler
 import android.os.Looper
-import com.example.friends.models.FriendModel
+import android.os.StrictMode
+import android.util.Log
+
+import com.example.friends.models.FriendsApiModels
 import com.example.friends.presenters.FriendsPresenter
-import java.util.logging.Handler
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
+import okhttp3.*
+
 
 class FriendsProvider(var presenter: FriendsPresenter) {
-    fun testLoadFriends(hasFriends:Boolean){
-        android.os.Handler(Looper.getMainLooper()).postDelayed({
-            val friendsList: ArrayList<FriendModel> = ArrayList()
-            if(hasFriends){
-                val friend1 = FriendModel("Evgen", "Polivanvo", "Moscow", null, true)
-                val friend2 = FriendModel("Valentina", "Sayapina", "Astrahan", null, false)
-                val friend3 = FriendModel("Dmitri", "Syromytnik", null, null, true)
-                friendsList.add(friend1)
-                friendsList.add(friend2)
-                friendsList.add(friend3)
-            }else{
+    private val TAG: String = FriendsProvider::class.java.simpleName
 
+    fun loadFriends(){
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        val client = OkHttpClient()
+
+        val request = Request.Builder()
+            .url("https://jsonplaceholder.typicode.com/users")
+            .build()
+
+        client.newCall(request).enqueue(object : Callback{
+            override fun onFailure(call: Call, e: java.io.IOException) {
+                Log.e(TAG, e.message.toString())
+                presenter.friendsLoaded(arrayListOf())
             }
-            presenter.friendsLoaded(friendsList)
-        }, 2000)
+            var mainHandler = Handler(Looper.getMainLooper())
+            override fun onResponse(call: Call, response: Response) {
+                mainHandler.post{
+                    val gson = GsonBuilder().serializeNulls().create()
+                    val itemType = object : TypeToken<ArrayList<FriendsApiModels>>() {}.type
+                    val itemsList = gson.fromJson<ArrayList<FriendsApiModels>>(response.body!!.string(), itemType)
+
+                    presenter.friendsLoaded(itemsList)
+                }
+            }
+        })
     }
 }

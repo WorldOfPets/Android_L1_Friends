@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.friends.adapters.FriendsAdapter
 import com.example.friends.databinding.ActivityFriendsBinding
-import com.example.friends.models.FriendModel
+import com.example.friends.models.FriendsApiModels
 import com.example.friends.presenters.FriendsPresenter
 import com.example.friends.views.FriendsView
 import moxy.MvpAppCompatActivity
@@ -58,7 +58,7 @@ class FriendsActivity : MvpAppCompatActivity(), FriendsView {
         bind.textNoitems.visibility = View.VISIBLE
     }
 
-    override fun setupFriendsList(friendsList: ArrayList<FriendModel>) {
+    override fun setupFriendsList(friendsList: ArrayList<FriendsApiModels>) {
         bind.recyclerFriends.visibility = View.VISIBLE
         bind.textNoitems.visibility = View.GONE
 

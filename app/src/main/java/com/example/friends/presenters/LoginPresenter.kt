@@ -10,6 +10,8 @@ import moxy.MvpPresenter
 
 @InjectViewState
 class LoginPresenter: MvpPresenter<LoginView>() {
+    private val TAG:String = LoginPresenter::class.java.simpleName
+
     fun login(isSuccess:Boolean) {
         viewState.startLoading()
         Handler(Looper.getMainLooper()).postDelayed({

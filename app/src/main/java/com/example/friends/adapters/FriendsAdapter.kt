@@ -1,43 +1,37 @@
 package com.example.friends.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.friends.R
 import com.example.friends.databinding.CellFriendBinding
-import com.example.friends.models.FriendModel
+import com.example.friends.models.FriendsApiModels
 
 
 class FriendsAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var mFriendsList: ArrayList<FriendModel> = ArrayList()
-    private var sourceFriendsList: ArrayList<FriendModel> = ArrayList()
+    var mFriendsList: ArrayList<FriendsApiModels> = ArrayList()
+    private var sourceFriendsList: ArrayList<FriendsApiModels> = ArrayList()
     fun filter(query: String) {
         mFriendsList.clear()
         sourceFriendsList.forEach {
-            if(it.name.contains(query, true) || it.surname.contains(query, true)){
+            if(it.name.contains(query, true) || it.username.contains(query, true)){
                 mFriendsList.add(it)
-            } else {
-                it.city?.let { city ->
-                    if(city.contains(query, true)){
-                        mFriendsList.add(it)
-                    }
-                }
             }
         }
         notifyDataSetChanged()
     }
-    fun setupFriends(friendsList: ArrayList<FriendModel>){
+    fun setupFriends(friendsList: ArrayList<FriendsApiModels>){
         sourceFriendsList.clear()
         sourceFriendsList.addAll(friendsList)
         filter("")
     }
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
-        //val layoutInflater = LayoutInflater.from(p0.context)
         val bind = CellFriendBinding.inflate(LayoutInflater.from(p0.context), p0, false)
-        //val itemView = layoutInflater.inflate(R.layout.cell_friend, p0, false)
         return FriendsViewHolder( bind)
     }
 
@@ -51,23 +45,21 @@ class FriendsAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-
-
     class FriendsViewHolder(bind: CellFriendBinding):RecyclerView.ViewHolder(bind.root){
         private var avatar: ImageView = bind.imgAvatar
         private var fullName: TextView = bind.txtFullname
-        private var city: TextView = bind.txtCity
-        private var isOnline: View = bind.viewOnline
+        private var username: TextView = bind.txtUsername
+        private var phone: TextView = bind.txtPhone
+        private var itemRecyler: LinearLayout = bind.itemRecycler
 
-        fun binds(friendModel: FriendModel){
-            fullName.text = "${friendModel.name} ${friendModel.surname}"
-            city.text = itemView.context.getString(R.string.no_city)
-            friendModel.city?.let { city.text = it }
-            isOnline.setBackgroundResource(R.color.light_blue)
-            if (friendModel.isOnline){
-                isOnline.visibility = View.VISIBLE
-            }else{
-                isOnline.visibility = View.GONE
+        @SuppressLint("SetTextI18n")
+        fun binds(friendModel: FriendsApiModels){
+            fullName.text = "Name: ${friendModel.name}"
+            username.text = "Login: ${friendModel.username}"
+            phone.text = "Phone: ${friendModel.phone}"
+            avatar.setImageResource(R.mipmap.ic_launcher_round)
+            itemRecyler.setOnClickListener {
+                Toast.makeText(it.context, "Hi, my email: ${friendModel.email}", Toast.LENGTH_LONG).show()
             }
         }
     }

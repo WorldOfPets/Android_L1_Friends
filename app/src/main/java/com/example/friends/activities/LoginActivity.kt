@@ -11,20 +11,21 @@ import com.example.friends.views.LoginView
 import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
 
+
 class LoginActivity : MvpAppCompatActivity(), LoginView  {
     private lateinit var bind: ActivityLoginBinding
-
+    private val TAG: String = LoginActivity::class.java.simpleName
     @InjectPresenter
     lateinit var loginPresenter: LoginPresenter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bind = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(bind.root)
-
         bind.btnLogin.setOnClickListener {
             loginPresenter.login(isSuccess = true)
         }
     }
+
 
     override fun startLoading() {
         bind.btnLogin.visibility = View.GONE

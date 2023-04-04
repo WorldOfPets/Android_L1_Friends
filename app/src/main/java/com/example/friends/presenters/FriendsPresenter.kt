@@ -2,7 +2,7 @@ package com.example.friends.presenters
 
 
 import com.example.friends.R
-import com.example.friends.models.FriendModel
+import com.example.friends.models.FriendsApiModels
 import com.example.friends.providers.FriendsProvider
 import com.example.friends.views.FriendsView
 import moxy.InjectViewState
@@ -12,10 +12,11 @@ import moxy.MvpPresenter
 class FriendsPresenter: MvpPresenter<FriendsView>() {
     fun loadFriends() {
         viewState.startLoading()
-        FriendsProvider(presenter=this).testLoadFriends(true)
+        FriendsProvider(presenter = this).loadFriends()
     }
 
-    fun friendsLoaded(friendsList: ArrayList<FriendModel>){
+
+    fun friendsLoaded(friendsList: ArrayList<FriendsApiModels>){
         viewState.endLoading()
         if(friendsList.size == 0){
             viewState.setupEmptyList()
