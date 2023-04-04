@@ -2,4 +2,8 @@
     <string name="app_name">friends</string>
     <string name="hello_user">Welcom to friend app!</string>
     <string name="login">Log in</string>
+    <string name="hint_search">Search...</string>
+    <string name="friends_noitems">У вас нет друзей</string>
+    <string name="connect_error">Connect error...</string>
+    <string name="no_city">No city</string>
 </resources>
